@@ -1,0 +1,8 @@
+# node_modulesの除外
+node_modules/
+
+# Ds_storeの除外
+.DS_Store
+
+#distは管理しないようにする
+dist/
