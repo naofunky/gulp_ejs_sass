@@ -14,6 +14,7 @@ const autoprefixer = require('autoprefixer');
 const postcss = require('gulp-postcss');
 const mq = require('gulp-group-css-media-queries');
 const sourcemaps = require('gulp-sourcemaps');
+const cssDeclarationSorter = require('css-declaration-sorter');
 
 //browser sync
 const browserSync = require('browser-sync').create();
@@ -57,6 +58,7 @@ const sassCompile = (done) => {
     .pipe(postcss([autoprefixer({})]))
     .pipe(plumber())
     .pipe(mq())
+    .pipe(postcss([cssDeclarationSorter({ order: 'alphabetical' })]))
     .pipe(sourcemaps.write('./'))
     .pipe(dest(paths.style.dist));
   done();
