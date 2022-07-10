@@ -1,8 +1,8 @@
 const { src, dest, series, parallel, watch } = require('gulp');
 const gulp = require('gulp');
+const rename = require('gulp-rename');
 
 //ejs
-const rename = require('gulp-rename');
 const ejs = require('gulp-ejs');
 const replace = require('gulp-replace');
 const fs = require('fs'); //Node.jsでファイルを操作するための公式モジュール
@@ -15,6 +15,9 @@ const postcss = require('gulp-postcss');
 const mq = require('gulp-group-css-media-queries');
 const sourcemaps = require('gulp-sourcemaps');
 const cssDeclarationSorter = require('css-declaration-sorter');
+
+//js
+const babel = require('gulp-babel');
 
 //browser sync
 const browserSync = require('browser-sync').create();
@@ -66,7 +69,11 @@ const sassCompile = (done) => {
 
 //jsコンパイル
 const jsCompile = (done) => {
-  src(paths.scripts.src).pipe(plumber()).pipe(dest(paths.scripts.dist));
+  src(paths.scripts.src)
+    .pipe(plumber())
+    .pipe(babel({ presets: ['@babel/preset-env'] }))
+    .pipe(rename('common.js'))
+    .pipe(dest(paths.scripts.dist));
   done();
 };
 
