@@ -1,10 +1,10 @@
-const { src, dest, series, parallel, watch } = require('gulp');
-const gulp = require('gulp');
+const { src, dest, series, watch } = require('gulp');
+// const gulp = require('gulp');
 const rename = require('gulp-rename');
 
 //ejs
 const ejs = require('gulp-ejs');
-const replace = require('gulp-replace');
+// const replace = require('gulp-replace');
 const fs = require('fs'); //Node.jsでファイルを操作するための公式モジュール
 
 //sass
@@ -18,6 +18,7 @@ const cssDeclarationSorter = require('css-declaration-sorter');
 
 //js
 const babel = require('gulp-babel');
+const eslint = require('gulp-eslint');
 
 //browser sync
 const browserSync = require('browser-sync').create();
@@ -41,8 +42,8 @@ const paths = {
 
 //ejsコンパイル
 const ejsCompile = (done) => {
-  const json_path = './ejs-config.json';
-  const json = JSON.parse(fs.readFileSync(json_path));
+  const jsonPath = './ejs-config.json';
+  const json = JSON.parse(fs.readFileSync(jsonPath));
 
   src(paths.ejs.src)
     .pipe(ejs(json))
@@ -71,7 +72,10 @@ const sassCompile = (done) => {
 const jsCompile = (done) => {
   src(paths.scripts.src)
     .pipe(plumber())
-    .pipe(babel({ presets: ['@babel/preset-env'] }))
+    .pipe(babel())
+    .pipe(eslint({ useEslintrc: true, fix: true }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
     .pipe(rename('common.js'))
     .pipe(dest(paths.scripts.dist));
   done();
@@ -81,8 +85,7 @@ const jsCompile = (done) => {
 const watchFiles = (done) => {
   watch(paths.ejs.watch, series(ejsCompile, browserReloadFunc));
   watch('./src/sass/**/*.scss', series(sassCompile, browserReloadFunc));
-  watch(paths.scripts.src, series(jsCompile, browserReloadFunc));
-
+  watch(paths.scripts.src, series(jsCompile));
   done();
 };
 

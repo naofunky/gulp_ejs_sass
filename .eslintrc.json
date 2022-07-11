@@ -1,0 +1,27 @@
+//https://eslint.org/docs/latest/user-guide/configuring#specifying-environments
+{
+  "extends": ["eslint:recommended"],
+  "plugins": [],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "$": false
+  },
+  "rules": {
+    "no-undef": 0, //宣言されていない変数の使用を禁止する
+    "no-console": 1, //コンソールを使用している
+    "no-alert": 1, //アラートを使用している
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }], //シングルクオートを使用していない
+    "consistent-return": 1, //関数の戻り値に何も指定していない
+    "default-case": 1, //switch文でdefaultが設定されていない
+    "eqeqeq": 1, //「===, !==」ではなく「==,!=」を使用している
+    "camelcase": [2, { "properties": "always" }], //キャメルケースを使用していない
+    "no-unused-vars": 1 //使用していない変数がある
+  }
+}

@@ -3,5 +3,3 @@ const hoge = (name) => {
 };
 
 hoge('山本リンダ');
-
-const gb = document.getElementById('gb');
